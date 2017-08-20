@@ -12,3 +12,6 @@ Lastly, you need a Memrise account and a course that you can edit its word list.
 There are two basic scripts. One of them is `get_def_and_audio.py` which gets word definitions for listed words in `words.txt` using Merriam-Webster Dictionary API. It can also generate audio files for given words in `words.txt`. Type the words that you want to work with in `words.txt`. Each line should contain one word. If you set `get_definitions` parameter `True` in `get_def_and_audio.py` then you will be asked to select a definition from a list of definitions for each word. Because a word may have several definitions in the dictionary. Definitions will be written to an output file named `definitions.txt`. Go to *Memrise->Your Course->Edit Page*. Your word list should contain *Word | Definition | Audio | Part of Speech* columns. Select *Bulk add words* from the *Advanced* tab. Copy the content of your `definitions.txt` file. Save and voilà.
 
 After entering words to your course you can run `audio_uploader.py`. It reads words from `words.txt`, audio files from *audio* folder and uploads them.
+
+## Result
+You may want to check the [course](https://www.memrise.com/course/1614098/harry-potter-chamber-of-secrets-words/) that I've uploaded its words using these scripts.
