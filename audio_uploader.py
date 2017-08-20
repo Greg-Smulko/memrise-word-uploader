@@ -8,7 +8,8 @@ from selenium.webdriver.support import expected_conditions as EC
 course_name = 'Harry Potter Chamber of Secrets Words'
 
 input_file = "words.txt"
-audio_path = '/home/mbd/memrise_list_generator/audio/'
+# Full path to your audio directory
+audio_path = ''
 # Your memrise id and password
 memrise_id = ""
 memrise_password = ""
