@@ -4,6 +4,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+import os
 
 course_name = 'Harry Potter Chamber of Secrets Words'
 
@@ -46,22 +47,22 @@ elem = WebDriverWait(driver, 10).until(
 elem = driver.find_element_by_link_text('Edit Course')
 elem.click()
 
-try:
-	for word in words:
-		elem = WebDriverWait(driver, 10).until(
-		        EC.presence_of_element_located((By.XPATH, "//div[text()=\"" + word + "\"]"))
-		    )
+for word in words:
+    try:
+        elem = WebDriverWait(driver, 10).until(
+                EC.presence_of_element_located((By.XPATH, "//div[text()=\"" + word + "\"]"))
+            )
 
-		elem = driver.find_element_by_xpath("//div[text()=\"" + word + "\"]")
-		parent = elem.find_element_by_xpath("..")
-		parent = parent.find_element_by_xpath("..")
-		parent_tr = parent.find_element_by_xpath("..")
-		upload_element = parent_tr.find_element_by_name('f')
+        elem = driver.find_element_by_xpath("//div[text()=\"" + word + "\"]")
+        parent = elem.find_element_by_xpath("..")
+        parent = parent.find_element_by_xpath("..")
+        parent_tr = parent.find_element_by_xpath("..")
+        upload_element = parent_tr.find_element_by_name('f')
+        upload_element.send_keys(os.path.join(audio_path, word + '.mp3'))
+        print('[INFO] Uploaded audio file for the word {}'.format(word))
+    except Exception as e:
+        print('[ERROR] Upload failed for the word {}: {}'.format(word, e))
 
-		upload_element.send_keys(audio_path + word + '.mp3')
-		print('[INFO] Uploaded audio file for the word {}'.format(word))
-	print('[INFO] Uploaded all audio files')
-except Exception as e:
-	raise e
+print('[INFO] Uploading audio files finished')
 
 # driver.quit()
