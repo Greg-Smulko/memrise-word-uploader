@@ -57,14 +57,17 @@ with open(input_file,"r") as f:
 for word in words:
     if produce_audio:
         try:
-            # Create a text-to-speech object
-            tts = g(text=word, lang='en')
             # Define relative path
             r_path = './audio/' + word + '.mp3'
-            # Save the audio to the given path
-            tts.save(r_path)
-
-            print('[INFO] Audio is saved for the word {} at {}'.format(word,r_path))
+            # Check if audio already exists            
+            if not os.path.isfile(r_path):
+                # Create a text-to-speech object
+                tts = g(text=word, lang='en')
+                # Save the audio to the given path
+                tts.save(r_path)
+                print('[INFO] Audio is saved for the word {} at {}'.format(word, r_path))
+            else:
+                print('[INFO] Audio already exists for the word {} at {}'.format(word, r_path))
         except Exception as e:
             raise e
 
