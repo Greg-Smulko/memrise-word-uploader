@@ -57,9 +57,13 @@ for word in words:
         parent = elem.find_element_by_xpath("..")
         parent = parent.find_element_by_xpath("..")
         parent_tr = parent.find_element_by_xpath("..")
-        upload_element = parent_tr.find_element_by_name('f')
-        upload_element.send_keys(os.path.join(audio_path, word + '.mp3'))
-        print('[INFO] Uploaded audio file for the word {}'.format(word))
+        audioNotUploaded = len(parent_tr.find_elements_by_xpath(".//button[text()[normalize-space(.)='no audio file']]")) > 0
+        if audioNotUploaded:
+            upload_element = parent_tr.find_element_by_name('f')
+            upload_element.send_keys(os.path.join(audio_path, word + '.mp3'))
+            print('[INFO] Uploaded audio file for the word {}'.format(word))
+        else:
+            print('[INFO] Skipped to upload audio file for the word {}'.format(word))
     except Exception as e:
         print('[ERROR] Upload failed for the word {}: {}'.format(word, e))
 
