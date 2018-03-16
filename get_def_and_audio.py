@@ -69,54 +69,57 @@ for word in words:
             else:
                 print('[INFO] Audio already exists for the word {} at {}'.format(word, r_path))
         except Exception as e:
-            raise e
+            print('[ERROR] Getting audio failed for the word {}: {}'.format(word, e))
 
     if get_definitions:
-        # Create the full URI
-        uri = "http://www.dictionaryapi.com/api/v1/references/learners/xml/" + str(word) + "?key=" + key
-        # Get data           
-        r = requests.get(uri)
-        if r.status_code == 200:
-            # Pre-process
-            text = r.text.encode('ascii','ignore')
-            # Definitions are stored in this list
-            definitions = []
+        try:
+            # Create the full URI
+            uri = "http://www.dictionaryapi.com/api/v1/references/learners/xml/" + str(word) + "?key=" + key
+            # Get data           
+            r = requests.get(uri)
+            if r.status_code == 200:
+                # Pre-process
+                text = r.text.encode('ascii','ignore')
+                # Definitions are stored in this list
+                definitions = []
 
-            # Parse xml
-            tree = ET.fromstring(text)
+                # Parse xml
+                tree = ET.fromstring(text)
 
-            # Definition counter for each word
-            count = 0
+                # Definition counter for each word
+                count = 0
 
-            print("Word : {}".format(word))
+                print("Word : {}".format(word))
 
-            # Extract data from XML
-            for i, item in enumerate(tree.iter('entry')):
-                w = removeStar(item.find('hw').text)
-                if w == str(word):
-                    # Part of speech
-                    pos = item.find('fl').text
-                    print(pos)
-                    # Definitions
-                    for j, dfn in enumerate(item.iter('dt')):
-                        t = removeOth(dfn.text)
-                        if t != '':
-                            print("{}. {}".format(count,t))
-                            count += 1
+                # Extract data from XML
+                for i, item in enumerate(tree.iter('entry')):
+                    w = removeStar(item.find('hw').text)
+                    if w == str(word):
+                        # Part of speech
+                        pos = item.find('fl').text
+                        print(pos)
+                        # Definitions
+                        for j, dfn in enumerate(item.iter('dt')):
+                            t = removeOth(dfn.text)
+                            if t != '':
+                                print("{}. {}".format(count,t))
+                                count += 1
 
-                            definitions.append((pos,t))
-            selection = 0
-            # If the word has definitions more than one 
-            # user should make a selection.
-            if len(definitions) > 1:
-                selection = int(input("Select the definition:\n> "))
+                                definitions.append((pos,t))
+                selection = 0
+                # If the word has definitions more than one 
+                # user should make a selection.
+                if len(definitions) > 1:
+                    selection = int(input("Select the definition:\n> "))
 
-            pos = definitions[selection][0]
-            dfn = definitions[selection][1]
+                pos = definitions[selection][0]
+                dfn = definitions[selection][1]
 
-            selections.append((word,dfn,pos))
-        else:
-            print("[ERROR] For word '{}' got status code {}".format(word,r.status_code))
+                selections.append((word,dfn,pos))
+            else:
+                print("[ERROR] For word '{}' got status code {}".format(word,r.status_code))
+        except Exception as e:
+            print('[ERROR] Desc failed for the word {}: {}'.format(word, e))
     print('---------------------------------')
 if get_definitions:
     # Write definition and POS values of each word to a file 
