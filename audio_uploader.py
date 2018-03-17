@@ -21,6 +21,8 @@ login_url = "https://www.memrise.com/login/"
 editCourseLabelText = 'Edit Course'
 # "No audio file" label
 noAudioFileLabelText = 'no audio file'
+# "Show/Hide" label for course levels
+showOrHideLabelText = 'Show/Hide'
 
 # Read words from given file
 with open(input_file,"r") as f:
@@ -50,6 +52,11 @@ elem = WebDriverWait(driver, 10).until(
     )
 elem = driver.find_element_by_link_text(editCourseLabelText)
 elem.click()
+
+# Expand all course levels
+showOrHideElements = driver.find_elements_by_partial_link_text(showOrHideLabelText)
+for elem in showOrHideElements:
+    elem.click()
 
 for word in words:
     try:
