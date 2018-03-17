@@ -16,7 +16,10 @@ memrise_id = ""
 memrise_password = ""
 # Memrise login page
 login_url = "https://www.memrise.com/login/"
-
+# "Edit Course" button label
+editCourseLabelText = 'Edit Course'
+# "No audio file" label
+noAudioFileLabelText = 'no audio file'
 
 # Read words from given file
 with open(input_file,"r") as f:
@@ -42,9 +45,9 @@ elem.click()
 
 # Go to edit course page
 elem = WebDriverWait(driver, 10).until(
-        EC.presence_of_element_located((By.LINK_TEXT, 'Edit Course'))
+        EC.presence_of_element_located((By.LINK_TEXT, editCourseLabelText))
     )
-elem = driver.find_element_by_link_text('Edit Course')
+elem = driver.find_element_by_link_text(editCourseLabelText)
 elem.click()
 
 for word in words:
@@ -57,7 +60,7 @@ for word in words:
         parent = elem.find_element_by_xpath("..")
         parent = parent.find_element_by_xpath("..")
         parent_tr = parent.find_element_by_xpath("..")
-        audioNotUploaded = len(parent_tr.find_elements_by_xpath(".//button[text()[normalize-space(.)='no audio file']]")) > 0
+        audioNotUploaded = len(parent_tr.find_elements_by_xpath(".//button[text()[normalize-space(.)='"+noAudioFileLabelText+"']]")) > 0
         if audioNotUploaded:
             upload_element = parent_tr.find_element_by_name('f')
             upload_element.send_keys(os.path.join(audio_path, word + '.mp3'))
