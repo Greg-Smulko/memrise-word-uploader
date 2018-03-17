@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 from selenium import webdriver
+from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -67,6 +68,8 @@ for word in words:
             print('[INFO] Uploaded audio file for the word {}'.format(word))
         else:
             print('[INFO] Skipped to upload audio file for the word {}'.format(word))
+    except TimeoutException:
+        print('[ERROR] Upload failed for the word {}: timeout (unable to find this word?)'.format(word))
     except Exception as e:
         print('[ERROR] Upload failed for the word {}: {}'.format(word, e))
 
