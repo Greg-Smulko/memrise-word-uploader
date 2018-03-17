@@ -119,8 +119,10 @@ for word in words:
                 selections.append((word,dfn,pos))
             else:
                 print("[ERROR] For word '{}' got status code {}".format(word,r.status_code))
+                selections.append((word,'NO-DEFINITION',''))
         except Exception as e:
             print('[ERROR] Desc failed for the word {}: {}'.format(word, e))
+            selections.append((word,'NO-DEFINITION',''))
     print('---------------------------------')
 if get_definitions:
     # Write definition and POS values of each word to a file 
