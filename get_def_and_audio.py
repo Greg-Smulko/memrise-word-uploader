@@ -41,6 +41,7 @@ selections = []
 # Or you may choose to do one of these operations seperately.
 produce_audio = False
 get_definitions = True
+let_user_select_definition = False
 
 if produce_audio:
     # Create a directory to store audio 
@@ -97,19 +98,19 @@ for word in words:
                     if w == str(word):
                         # Part of speech
                         pos = item.find('fl').text
-                        print(pos)
+                        let_user_select_definition and print(pos)
                         # Definitions
                         for j, dfn in enumerate(item.iter('dt')):
                             t = removeOth(dfn.text)
                             if t != '':
-                                print("{}. {}".format(count,t))
+                                let_user_select_definition and print("{}. {}".format(count,t))
                                 count += 1
 
                                 definitions.append((pos,t))
                 selection = 0
                 # If the word has definitions more than one 
                 # user should make a selection.
-                if len(definitions) > 1:
+                if let_user_select_definition and len(definitions) > 1:
                     selection = int(input("Select the definition:\n> "))
 
                 pos = definitions[selection][0]
